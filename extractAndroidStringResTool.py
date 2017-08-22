@@ -9,7 +9,7 @@
     filterlist.txt 是用于过滤文件的, 应与脚本文件放在同一目录
 
     1. 进入脚本文件所在目录
-    2. 执行命令: python exactAndroidStringResTool.py [scanned_dir]
+    2. 执行命令: python extractAndroidStringResTool.py [scanned_dir]
 
     参数解释:
     scanned_dir : 待扫描的目录(一般是项目根目录)
@@ -48,6 +48,8 @@ filter_list_file_name = "filterlist.txt"
 class_list = []
 # 过滤的文件前缀
 prefix_list = []
+# 过滤的目录
+dir_list = []
 
 # 模块自增标记
 auto_increment_module = 0
@@ -70,6 +72,8 @@ def scan_dir(path):
             continue
         if line_info.startswith("--"):
             prefix_list.append(line_info[2:])
+        elif line_info.startswith("**"):
+            dir_list.append(line_info[2:])
         else:
             class_list.append(line_info)
 
@@ -79,10 +83,19 @@ def scan_dir(path):
         file_path = os.path.join(path, name)
 
         if os.path.isdir(file_path):
-            scan_dir(file_path)
+            if not check_ignore_dir(name):
+                scan_dir(file_path)
         else:
             if not check_ignore_file(name):
                 scan_file(file_path)
+
+
+def check_ignore_dir(dir_name):
+    try:
+        dir_list.index(dir_name)
+        return True
+    except ValueError:
+        return False
 
 
 # 判断某文件是否需要被忽略掉(根据后缀或者过滤配置文件来判断)

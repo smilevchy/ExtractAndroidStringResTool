@@ -1,0 +1,25 @@
+# 特定规则下过滤部分文件或者目录
+
+# 规则一：过滤目录
+
+# Syntax:
+**some_dir
+
+# Example: 过滤掉 test 目录
+**test
+
+# 规则二：根据前缀过滤某些文件
+
+# Syntax:
+--some_file
+
+# Example: 过滤掉 TestA/TestB/TestC文件
+--Test
+
+# 规则三：文件名过滤
+
+# Syntax:
+some_file
+
+# Example: 过滤掉 Test.java 文件
+Test
